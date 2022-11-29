@@ -1,6 +1,4 @@
 import socket
-
-
 def data():
     global a
     message = input("Client : ")
@@ -17,10 +15,8 @@ def data():
                 print("Serveur : ", data)
                 client_socket.send('disconnect'.encode())
                 client_socket.close()
-
                 a=False
                 return a
-
             elif data == 'kill' :
                 print("fermeture de la session")
                 reply = 'kill'
@@ -36,18 +32,13 @@ def data():
                 a = False
                 return a
             else:
-
                 print("Serveur : ", data)
-
-
-
 if __name__ == '__main__':
     a= True
     client_socket = socket.socket()
     client_socket.connect(('127.0.0.1', 8111))
     while a == True:
         try:
-
             data()
         except OSError:
             print(' Déconnexion')
