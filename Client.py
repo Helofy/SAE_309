@@ -21,14 +21,20 @@ def data():
                 a=False
                 return a
 
-            elif data == 'kill':
+            elif data == 'kill' :
                 print("fermeture de la session")
                 reply = 'kill'
                 client_socket.send(reply.encode())
                 client_socket.close()
                 a= False
                 return a
-
+            elif data == 'reset':
+                print("fermeture de la session")
+                reply = 'reset'
+                client_socket.send(reply.encode())
+                client_socket.close()
+                a = False
+                return a
             else:
 
                 print("Serveur : ", data)
