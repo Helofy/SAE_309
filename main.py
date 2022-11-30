@@ -1,36 +1,30 @@
 import subprocess
 import socket
 import platform
-import time
-b = True
 a= True
-kill = False
-
 def data(server_socket,conn):
     while a == True:
         try:
          data = conn.recv(1024).decode()
         except OSError:
-
             return ('serveur déonnecté')
         else:
             if data =='disconnect':
                 reply ='disconnect'
                 conn.send(reply.encode())
-
             else:
                 print("Client : ", data)
             if data == 'kill':
-
                 reply= 'kill'
                 conn.send(reply.encode())
                 conn.close()
-
             elif data == 'reset':
                 reply='reset'
                 conn.send(reply.encode())
                 conn.close()
-
+                server_socket.close()
+                print('Reset du serveur')
+                connect()
             else:
                 if data == 'Nom':
                     reply =platform.node()
@@ -40,31 +34,20 @@ def data(server_socket,conn):
                     conn.send(b.encode())
                 else:
                     reply='hello'
-
-
                     try:
                          conn.send(reply.encode())
                     except ConnectionAbortedError:
                         if data == 'disconnect' :
                          reconnect(server_socket,conn)
-
 def reconnect(se,conn):
-
-
     conn,address =se.accept()
     data(se,conn)
-
-
 def connect():
     server_socket = socket.socket()
     server_socket.bind(('127.0.0.1', 8111))
     server_socket.listen(1)
     conn, address = server_socket.accept()
     data(server_socket,conn)
-
-
-
 if __name__ == '__main__':
-
         connect()
 
