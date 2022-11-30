@@ -17,14 +17,14 @@ def data():
                 client_socket.close()
                 a=False
                 return a
-            elif data == 'kill' :
+            if data == 'kill' :
                 print("fermeture de la session")
                 reply = 'kill'
                 client_socket.send(reply.encode())
                 client_socket.close()
                 a= False
                 return a
-            elif data == 'reset':
+            if data == 'reset':
                 print("fermeture de la session")
                 reply = 'reset'
                 client_socket.send(reply.encode())
