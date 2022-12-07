@@ -1,6 +1,7 @@
 import subprocess
 import socket
 import platform
+
 a= True
 def data(server_socket,conn):
     while a == True:
@@ -32,13 +33,8 @@ def data(server_socket,conn):
                 if data =='ip':
                     b=subprocess.getoutput('ipconfig  | findstr IPv4')
                     conn.send(b.encode())
-                else:
-                    reply='hello'
-                    try:
-                         conn.send(reply.encode())
-                    except ConnectionAbortedError:
-                        if data == 'disconnect' :
-                         reconnect(server_socket,conn)
+
+
 def reconnect(se,conn):
     conn,address =se.accept()
     data(se,conn)
@@ -48,6 +44,11 @@ def connect():
     server_socket.listen(1)
     conn, address = server_socket.accept()
     data(server_socket,conn)
+
+
+
+
+
 if __name__ == '__main__':
         connect()
 
