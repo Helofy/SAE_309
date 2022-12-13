@@ -5,11 +5,10 @@ import sys
 
 import ClassClient
 
-
 class TextEditDemo(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-
+        self.Machine=ClassClient.Client('127.0.0.1',8112)
         self.i = 0
         self.setWindowTitle("QTextEdit")
         self.resize(300, 270)
@@ -54,9 +53,9 @@ class TextEditDemo(QWidget):
     def connexion(self):
         host=str(self.Hostip.text())
         port=int(self.Portnum.text())
-        self.sock = ClassClient.Client(host,port)
+        self.Machine = ClassClient.Client(host,port)
         try:
-            a=self.sock.connect()
+            a=self.Machine.connect()
         except:
             msg = QMessageBox()
             msg.setWindowTitle("Erreur")
@@ -67,7 +66,8 @@ class TextEditDemo(QWidget):
         else:
             if int(a) != -1:
                 self.Status.setText('Connected')
-
+                thread2 = threading.Thread(target=self.recept)
+                thread2.start()
 
             else:
                 msg = QMessageBox()
@@ -79,13 +79,19 @@ class TextEditDemo(QWidget):
 
     #        self.textEdit.setPlainText("Hello PyQt5!\nfrom pythonpyqt.com")
 
-    def btnPress1_Clicked(self):
+    def btnPress1_Clicked(self,Machine):
 
         if self.Status.text()!='Disconnected':
             text=self.message.toPlainText()
-            self.textEdit.append( text)
-
-            self.__sock.envoi(text)
+            try:
+                self.Machine.envoi(text)
+                self.textEdit.append(text)
+            except :
+                msg = QMessageBox()
+                msg.setWindowTitle("Erreur")
+                msg.setText("erreur message")
+                msg.setIcon(QMessageBox.Critical)
+                msg.exec_()
         else:
             msg = QMessageBox()
             msg.setWindowTitle("Erreur")
@@ -97,6 +103,9 @@ class TextEditDemo(QWidget):
     def btnPress2_Clicked(self):
         self.textEdit.setPlainText("")
 #        self.textEdit.setHtml("<font color='red' size='6'><red>Hello PyQt5!\nHello</font>")
+    def recept(self):
+        msg = self.Machine.reception()
+
 
 
 if __name__ == '__main__':

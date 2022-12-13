@@ -14,7 +14,7 @@ def data(server_socket,conn):
                 reply ='disconnect'
                 conn.send(reply.encode())
             else:
-                print("Client : ", data)
+                print("Client : ",data)
             if data == 'kill':
                 reply= 'kill'
                 conn.send(reply.encode())
@@ -40,7 +40,7 @@ def reconnect(se,conn):
     data(se,conn)
 def connect():
     server_socket = socket.socket()
-    server_socket.bind(('127.0.0.1', 8111))
+    server_socket.bind(('127.0.0.1', 8112))
     server_socket.listen(1)
     conn, address = server_socket.accept()
     data(server_socket,conn)

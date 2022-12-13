@@ -3,19 +3,15 @@ import socket, threading, sys
 
 class Client():
     def __init__(self, host, port):
-        self.__host = host
-        self.__port = port
-        self.__sock = socket.socket()
-        self.__thread = None
-
-    @property
-    def sock(self):
-        return self.__sock
+        self.host = host
+        self.port = port
+        self.sock = socket.socket()
+        self.thread = None
 
     # fonction de connection.
     def connect(self) -> int:
         try:
-            self.__sock.connect((self.__host, self.__port))
+            self.sock.connect((self.host, self.port))
         except ConnectionRefusedError:
             print("serveur non lancé ou mauvaise information")
             return -1
@@ -24,6 +20,8 @@ class Client():
             return -1
         else:
             print("connexion réalisée")
+            thread = threading.Thread(target=self.reception)
+            thread.start()
             return 0
 
     """ 
@@ -32,32 +30,19 @@ class Client():
         -> lance une boucle pour la partie emission. arréte si kill, reset ou disconnect
     """
 
-    def dialogue(self):
-        msg = ""
-        self.__thread = threading.Thread(target=self.__reception, args=[self.__sock, ])
-        self.__thread.start()
-        while msg != "kill" and msg != "disconnect" and msg != "reset":
-            msg = self.__envoi()
-        self.__thread.join()
-        self.__sock.close()
 
-    # méthode d'envoi d'un message au travers la socket. Le résultat de cette methode est le message envoyé.
-    def __envoi(self,msg):
-        msg=str(msg)
-        try:
-            self.__sock.send(msg.encode())
-        except BrokenPipeError:
-            print("erreur, socket fermée")
-        return msg
+
+    def envoi(self,msg):
+        self.sock.send(msg.encode())
 
     """
       thread recepction, la connection étant passée en argument
     """
 
-    def __reception(self, conn):
+    def reception(self,):
         msg = ""
         while msg != "kill" and msg != "disconnect" and msg != "reset":
-            msg = conn.recv(1024).decode()
+            msg = self.sock.recv(1024).decode()
             print(msg)
 
 
@@ -69,4 +54,5 @@ if __name__ == "__main__":
         print('hello')
     # en dehors du if
     Client.connect()
-    Client.dialogue()
+    message = ''
+
