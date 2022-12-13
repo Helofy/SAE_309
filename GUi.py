@@ -66,8 +66,6 @@ class TextEditDemo(QWidget):
         else:
             if int(a) != -1:
                 self.Status.setText('Connected')
-                thread2 = threading.Thread(target=self.recept)
-                thread2.start()
 
             else:
                 msg = QMessageBox()
@@ -84,8 +82,12 @@ class TextEditDemo(QWidget):
         if self.Status.text()!='Disconnected':
             text=self.message.toPlainText()
             try:
-                self.Machine.envoi(text)
+
                 self.textEdit.append(text)
+                self.Machine.envoi(text)
+                msg = ClassClient.Client.get_message(self.Machine)
+
+                self.textEdit.append(msg)
             except :
                 msg = QMessageBox()
                 msg.setWindowTitle("Erreur")
@@ -103,8 +105,8 @@ class TextEditDemo(QWidget):
     def btnPress2_Clicked(self):
         self.textEdit.setPlainText("")
 #        self.textEdit.setHtml("<font color='red' size='6'><red>Hello PyQt5!\nHello</font>")
-    def recept(self):
-        msg = self.Machine.reception()
+
+
 
 
 

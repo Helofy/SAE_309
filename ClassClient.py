@@ -1,5 +1,5 @@
 import socket, threading, sys
-
+msg =''
 
 class Client():
     def __init__(self, host, port):
@@ -43,7 +43,14 @@ class Client():
         msg = ""
         while msg != "kill" and msg != "disconnect" and msg != "reset":
             msg = self.sock.recv(1024).decode()
-            print(msg)
+            return msg
+
+
+    def set_message(self):
+        self.message = msg
+
+    def get_message(self):
+        return self.message
 
 
 if __name__ == "__main__":
