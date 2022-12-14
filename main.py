@@ -30,7 +30,7 @@ def data(server_socket,conn):
                 if data == 'Nom':
                     reply =platform.node()
                     conn.send(reply.encode())
-                if data =='ip':
+                if data ==' ip' or data =='ip' :
                     b=subprocess.getoutput('ipconfig  | findstr IPv4')
                     conn.send(b.encode())
 

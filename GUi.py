@@ -85,9 +85,9 @@ class TextEditDemo(QWidget):
 
                 self.textEdit.append(text)
                 self.Machine.envoi(text)
-                msg = ClassClient.Client.get_message(self.Machine)
 
-                self.textEdit.append(msg)
+
+
             except :
                 msg = QMessageBox()
                 msg.setWindowTitle("Erreur")

@@ -43,7 +43,7 @@ class Client():
         msg = ""
         while msg != "kill" and msg != "disconnect" and msg != "reset":
             msg = self.sock.recv(1024).decode()
-            return msg
+            print( msg)
 
 
     def set_message(self):
