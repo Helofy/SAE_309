@@ -1,5 +1,11 @@
 from PyQt5.QtWidgets import *
 import threading
+L=[]
+import csv;
+f= open (r"ip.csv")
+myReader = csv.reader(f)
+for row in myReader:
+    L.append(row)
 
 import sys
 
@@ -18,7 +24,7 @@ class TextEditDemo(QWidget):
         self.Portnum = QLineEdit()
         self.Status=QLabel('Disconnected')
         self.btnconn = QPushButton("Connexion")
-        self.btndialogue = QPushButton("Dialogue")
+        self.iplist = QComboBox()
         self.textEdit = QTextEdit()
         self.textEdit.setEnabled(False)
         self.btnPress1 = QPushButton("Add message")
@@ -26,20 +32,22 @@ class TextEditDemo(QWidget):
         self.message = QTextEdit()
 
         layout = QGridLayout()
-        layout.addWidget(self.Host,0,0,1,1)
-        layout.addWidget(self.Hostip,0,1,1,2)
-        layout.addWidget(self.Portnum,0,2,1,1)
-        layout.addWidget(self.btnconn ,0,3,1,1)
-        layout.addWidget(self.btndialogue, 1, 3, 1, 1)
-        layout.addWidget(self.Status,1,0,1,2)
-
-        layout.addWidget(self.textEdit,2,0,2,8)
+        layout.addWidget(self.iplist, 0, 1, 1, 2)
+        layout.addWidget(self.Host,1,0,1,1)
+        layout.addWidget(self.Hostip,1,1,1,2)
+        layout.addWidget(self.Portnum,1,2,1,1)
+        layout.addWidget(self.btnconn ,1,3,1,1)
+        layout.addWidget(self.Status,2,0,1,2)
+        layout.addWidget(self.textEdit,3,0,2,8)
         layout.addWidget(self.btnPress1)
         layout.addWidget((self.message))
         layout.addWidget(self.btnPress2)
+        for i in range (len(L)):
 
+            self.iplist.addItem(L[i][0] +' '+ L[i][1])
         self.setLayout(layout)
         self.btnconn.clicked.connect(self.connexion)
+        self.iplist.activated.connect(self.addresse)
 
         self.btnPress1.clicked.connect(self.btnPress1_Clicked)
         self.btnPress2.clicked.connect(self.btnPress2_Clicked)
@@ -47,6 +55,13 @@ class TextEditDemo(QWidget):
 
 
 
+
+    def addresse(self):
+        IPL=self.iplist.currentText()
+        IPL=IPL.split(' ')
+        self.Hostip.setText(str(IPL[0]))
+        self.Portnum.setText((IPL[1]))
+        print(IPL[1])
 
 
 
